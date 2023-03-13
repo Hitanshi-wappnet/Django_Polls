@@ -2,11 +2,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
+from django.views.generic import TemplateView
 
 from .models import Choice, Question
 
 
 class IndexView(generic.ListView):
+    # Give template to redirect and context.
     template_name = 'index.html'
     context_object_name = 'latest_question_list'
 
@@ -15,11 +17,13 @@ class IndexView(generic.ListView):
 
 
 class DetailView(generic.DetailView):
+    # Provided Model and template name
     model = Question
     template_name = 'detail.html'
 
 
 class ResultsView(generic.DetailView):
+    # Provided Model and template name
     model = Question
     template_name = 'results.html'
 
@@ -44,5 +48,6 @@ def vote(request, question_id):
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
 
 
-def first(request):
-    return render(request, 'first.html')
+class FirstView(TemplateView):
+    # Provided template name
+    template_name = "first.html"
